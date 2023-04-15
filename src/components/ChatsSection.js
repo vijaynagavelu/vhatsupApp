@@ -110,7 +110,7 @@ export default function ChatsSection() {
         return;
     }
     if (chats) {
-        console.log("nooo")
+        console.log("noooo")
         return (
             <div className='containerA'>
 
