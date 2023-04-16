@@ -1,20 +1,14 @@
 import Contact from "./Contact";
-import { createUserWithEmailAndPassword, onAuthStateChanged, signInWithEmailAndPassword, signOut } from "firebase/auth";
+import { onAuthStateChanged, signOut } from "firebase/auth";
 import { auth, db } from '../firebase-config';
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import {
-    addDoc,
-    deleteDoc,
     doc,
-    getDoc,
     collection,
     updateDoc,
     setDoc,
-    where,
-    query,
     getDocs,
     arrayUnion,
-    or,
     onSnapshot,
 } from "firebase/firestore";
 
@@ -28,7 +22,8 @@ export default function ChatsSection() {
     const CollectionRef = collection(db, "contactsArray");
 
 
-    const getChatsArray = async () => {
+
+    const getChatsArray = useCallback(async () => {
         if (!user) {
             return;
         }
@@ -43,7 +38,24 @@ export default function ChatsSection() {
             setChats(null);
             console.log("no such docss")
         }
-    }
+    }, [user, CollectionRef])
+
+    // const getChatsArray = async () => {
+    //     if (!user) {
+    //         return;
+    //     }
+    //     console.log(user.email + "Array");
+    //     const data = await getDocs(CollectionRef, user.email + "Array");
+    //     if (data.docs[0]) {
+    //         //  console.log(data.docs[0].id);
+    //         setDocumentId(data.docs[0].id);
+    //         // console.log(data.docs[0].data().a);
+    //         setChats(data.docs[0].data().a);
+    //     } else {
+    //         setChats(null);
+    //         console.log("no such docss")
+    //     }
+    // }
 
 
     const addContact = async () => {
@@ -81,7 +93,7 @@ export default function ChatsSection() {
     useEffect(() => {
         // console.log("chatSection");
         getChatsArray();
-    }, [user]);
+    }, [user, getChatsArray]);
 
     useEffect(() => {
         onSnapshot(CollectionRef, (snapshot) => {
@@ -92,7 +104,7 @@ export default function ChatsSection() {
             setUser(currentUser);
         });
         return subscriber;
-    }, []);
+    },);
 
 
     useEffect(() => {
@@ -117,7 +129,7 @@ export default function ChatsSection() {
                 <div className="sticky">
                     <div className='navBar'>
                         <div className='profilePicture'>
-                            <img src='https://pps.whatsapp.net/v/t61.24694-24/325585548_523323919881403_2051161980019777328_n.jpg?stp=dst-jpg_s96x96&ccb=11-4&oh=01_AdSdXxKQTWmPkO1RZJJ6QZ0H_ZFefhla_EyWK26QM40hSg&oe=642EC410'></img>
+                            <img alt="sorry" src='https://pps.whatsapp.net/v/t61.24694-24/325585548_523323919881403_2051161980019777328_n.jpg?stp=dst-jpg_s96x96&ccb=11-4&oh=01_AdSdXxKQTWmPkO1RZJJ6QZ0H_ZFefhla_EyWK26QM40hSg&oe=642EC410'></img>
                         </div>
 
                         <div className='options'>

@@ -55,7 +55,7 @@ export default function Contact({ name, lastSeen, lastMessageTime, message, pinn
                 showContact({ name, lastSeen, lastMessageTime, imgLink, messages, email })
             }}>
             <div className='displayPicture'>
-                <img src={imgLink}></img>
+                <img alt="sorry" src={imgLink}></img>
             </div>
             <div className='contactsDetails '>
                 <div className='nameTime'>

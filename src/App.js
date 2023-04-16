@@ -2,9 +2,9 @@ import './App.css';
 import { ChatProvider } from './ChatContext';
 import ChatsSection from './components/ChatsSection';
 import MessageSection from './components/MessageSection';
-import { useContext, useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { auth } from './firebase-config';
-import { createUserWithEmailAndPassword, onAuthStateChanged, signInWithEmailAndPassword, signOut } from "firebase/auth";
+import { onAuthStateChanged, signInWithEmailAndPassword, signOut } from "firebase/auth";
 import Input from './components/Input';
 
 
@@ -27,7 +27,7 @@ function App() {
       setUser(currentUser);
     })
     return subscriber;
-  }, [], [errorMessage])
+  },)
 
   const login = async (e) => {
     e.preventDefault()

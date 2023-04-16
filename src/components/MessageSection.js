@@ -4,12 +4,9 @@ import { useContext, useState, useEffect, useRef, useCallback } from "react";
 import ChatContext from "../ChatContext";
 import moment from "moment/moment";
 import { auth, db } from '../firebase-config';
-import { createUserWithEmailAndPassword, onAuthStateChanged, signInWithEmailAndPassword, signOut } from "firebase/auth";
+import { onAuthStateChanged } from "firebase/auth";
 import {
-    addDoc,
-    deleteDoc,
     doc,
-    getDoc,
     collection,
     updateDoc,
     setDoc,
@@ -33,7 +30,7 @@ export default function MessageSection() {
     const [messagesJson, setMessagesJson] = useState(null);
 
 
-    const getMessagesArray = async () => {
+    const getMessagesArray = useCallback(async () => {
         if (!contact || !user) {
             return;
         }
@@ -55,15 +52,15 @@ export default function MessageSection() {
             setMessagesJson(null);
             console.log("no such docss")
         }
-    }
+    }, [user, CollectionRef, contact])
 
     function enterKey(e) {
         console.log("in")
-        if (e.shiftKey && e.keyCode == 13) {
+        if (e.shiftKey && e.keyCode === 13) {
             console.log("Shift+Enter");
             // e.preventDefault();
         }
-        if (e.keyCode == 13 && !e.shiftKey) {
+        if (e.keyCode === 13 && !e.shiftKey) {
             console.log("only Enter", user);
             sendMessage(editable.current.innerText);
             e.preventDefault();
@@ -83,11 +80,11 @@ export default function MessageSection() {
             // console.log("snapshot", user)
             getMessagesArray();
         });
-    }, [user, contact])
+    }, [user, contact, CollectionRef, getMessagesArray])
 
     useEffect(() => {
         getMessagesArray();
-    }, [contact])
+    }, [contact, getMessagesArray])
 
     function lastSeen(time) {
         var lastSeen = moment.unix(time);
@@ -235,7 +232,7 @@ export default function MessageSection() {
             < div className='containerB'>
                 <div className='profileBar'>
                     <div className='profileDisplayPicture'>
-                        <img src={contact.imgLink}></img>
+                        <img alt="sorry" src={contact.imgLink}></img>
                     </div>
 
                     <div className='profileDetails '>
@@ -299,7 +296,7 @@ export default function MessageSection() {
 
             <div className='profileBar'>
                 <div className='profileDisplayPicture'>
-                    <img src={contact.imgLink}></img>
+                    <img alt="sorry" src={contact.imgLink}></img>
                 </div>
 
                 <div className='profileDetails '>
