@@ -19,49 +19,50 @@ import {
 } from "firebase/firestore";
 
 
+const CollectionRef = collection(db, "messages"); //keep outside to prevent recreate during re-render
+
 export default function MessageSection() {
 
     const { contact } = useContext(ChatContext);
-
-    const CollectionRef = collection(db, "messages");
     const [user, setUser] = useState(null);
     const editable = useRef(null);
     const [documentId, setDocumentId] = useState();
     const [messagesJson, setMessagesJson] = useState(null);
 
 
+
     const getMessagesArray = useCallback(async () => {
         if (!contact || !user) {
             return;
         }
-        console.log("ku");
         const movieMatch = query(CollectionRef, or(
             where("arrayName", '==', contact.email + user.email),
             where("arrayName", '==', user.email + contact.email)
         ));
 
-        console.log(contact.email + user.email);
+        //console.log(contact.email + user.email);
 
         const data = await getDocs(movieMatch);
         if (data.docs[0]) {
             // console.log(data.docs[0].id);
             setDocumentId(data.docs[0].id);
+            //console.log(data.docs[0].data().messagesArray)
             setMessagesJson(data.docs[0].data().messagesArray);
         } else {
             setDocumentId(null);
             setMessagesJson(null);
             console.log("no such docss")
         }
-    }, [user, CollectionRef, contact])
+    }, [contact, user])
 
     function enterKey(e) {
-        console.log("in")
+        //console.log("in")
         if (e.shiftKey && e.keyCode === 13) {
             console.log("Shift+Enter");
             // e.preventDefault();
         }
         if (e.keyCode === 13 && !e.shiftKey) {
-            console.log("only Enter", user);
+            console.log("only Enter");
             sendMessage(editable.current.innerText);
             e.preventDefault();
         }
@@ -76,15 +77,17 @@ export default function MessageSection() {
     }, []);
 
     useEffect(() => {
-        onSnapshot(CollectionRef, (snapshot) => {
-            // console.log("snapshot", user)
+        const snapshot = onSnapshot(CollectionRef, (snapshot) => {
             getMessagesArray();
         });
-    }, [user, contact, CollectionRef, getMessagesArray])
+        return snapshot
+    }, [getMessagesArray]);
 
     useEffect(() => {
         getMessagesArray();
-    }, [contact, getMessagesArray])
+    }, [getMessagesArray]);
+
+
 
     function lastSeen(time) {
         var lastSeen = moment.unix(time);

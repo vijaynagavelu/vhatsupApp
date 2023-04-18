@@ -12,6 +12,8 @@ import {
     onSnapshot,
 } from "firebase/firestore";
 
+const CollectionRef = collection(db, "contactsArray");
+
 export default function ChatsSection() {
 
     const [user, setUser] = useState();
@@ -19,7 +21,6 @@ export default function ChatsSection() {
     const [documentId, setDocumentId] = useState();
     const [message, setMessage] = useState();
 
-    const CollectionRef = collection(db, "contactsArray");
 
 
 
@@ -38,24 +39,8 @@ export default function ChatsSection() {
             setChats(null);
             console.log("no such docss")
         }
-    }, [user, CollectionRef])
+    }, [user])
 
-    // const getChatsArray = async () => {
-    //     if (!user) {
-    //         return;
-    //     }
-    //     console.log(user.email + "Array");
-    //     const data = await getDocs(CollectionRef, user.email + "Array");
-    //     if (data.docs[0]) {
-    //         //  console.log(data.docs[0].id);
-    //         setDocumentId(data.docs[0].id);
-    //         // console.log(data.docs[0].data().a);
-    //         setChats(data.docs[0].data().a);
-    //     } else {
-    //         setChats(null);
-    //         console.log("no such docss")
-    //     }
-    // }
 
 
     const addContact = async () => {
@@ -91,28 +76,27 @@ export default function ChatsSection() {
     };
 
     useEffect(() => {
-        // console.log("chatSection");
-        getChatsArray();
-    }, [user, getChatsArray]);
-
-    useEffect(() => {
-        onSnapshot(CollectionRef, (snapshot) => {
-            // console.log(snapshot)
-            getChatsArray();
-        });
-        const subscriber = onAuthStateChanged(auth, (currentUser) => {
-            setUser(currentUser);
-        });
-        return subscriber;
-    },);
-
-
-    useEffect(() => {
         const subscriber = onAuthStateChanged(auth, (currentUser) => {
             setUser(currentUser);
         })
         return subscriber;
     }, [])
+
+    useEffect(() => {
+        onSnapshot(CollectionRef, (snapshot) => {
+            getChatsArray();
+        });
+    }, [getChatsArray]);
+
+    useEffect(() => {
+        // console.log("chatSection");
+        getChatsArray();
+    }, [getChatsArray, user]);
+
+
+
+
+
 
     const logout = async () => {
         await signOut(auth);
