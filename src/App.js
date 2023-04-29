@@ -88,17 +88,19 @@ function App() {
         <form onSubmit={login} >
 
           <div className="flexGrow">
-            <p><Input placeHolder=" Email" label="Email" setItem={setLoginEmail} errorMessage={emailError} /> </p>
-            <p><Input placeHolder=" Password" type="password" label="Password" setItem={setLoginPassword} errorMessage={passwordError} /></p>
+            <div><Input placeHolder=" Email" label="Email" setItem={setLoginEmail} errorMessage={emailError} /> </div>
+            <br />
+            <div><Input placeHolder=" Password" type="password" label="Password" setItem={setLoginPassword} errorMessage={passwordError} /></div>
           </div>
 
-          <p><input type="submit" className="loginButton" value="Login" /></p>
-          <p><input type="submit" value="LogOut" onClick={logout} /></p>
+          <div><input type="submit" className="loginButton" value="Login" /></div>
+          <br />
+          <div><input type="submit" value="LogOut" onClick={logout} /></div>
 
           <div className={disableError ? "errorMessage" : "transparentMessage"}> {`${disableError ? disableError : ""}`}</div>
 
 
-          {user && <p>{user.uid}</p>}
+          {user && <div>{user.uid}</div>}
 
         </form>
 
