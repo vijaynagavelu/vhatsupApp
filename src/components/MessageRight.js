@@ -3,10 +3,8 @@ import moment from "moment/moment";
 
 export default function MessageRight({ message, time, tailCheck }) {
 
-    // console.log(Math.floor(Date.now() / 1000));
-
     var day = moment.unix(time);
-
+    // console.log(Math.floor(Date.now() / 1000));
     const deliveredTimeHour = day.format('HH');
     const deliveredTimeMinute = day.format('mm');
 

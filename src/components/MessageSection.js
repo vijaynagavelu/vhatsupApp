@@ -35,14 +35,14 @@ export default function MessageSection() {
         if (!contact || !user) {
             return;
         }
-        const movieMatch = query(CollectionRef, or(
+        const messagesArrayMatch = query(CollectionRef, or(
             where("arrayName", '==', contact.email + user.email),
             where("arrayName", '==', user.email + contact.email)
         ));
 
         //console.log(contact.email + user.email);
 
-        const data = await getDocs(movieMatch);
+        const data = await getDocs(messagesArrayMatch);
         if (data.docs[0]) {
             // console.log(data.docs[0].id);
             setDocumentId(data.docs[0].id);
