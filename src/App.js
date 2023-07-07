@@ -93,20 +93,22 @@ function App() {
             <div><Input placeHolder=" Password" type="password" label="Password" setItem={setLoginPassword} errorMessage={passwordError} /></div>
           </div>
 
+          <br></br>
+
           <div><input type="submit" className="loginButton" value="Login" /></div>
           <br />
           <div><input type="submit" value="LogOut" onClick={logout} /></div>
 
           <div className={disableError ? "errorMessage" : "transparentMessage"}> {`${disableError ? disableError : ""}`}</div>
-
-
           {user && <div>{user.uid}</div>}
-
         </form>
-
+        <br></br>
+       <div>Demo Credentials</div>
+       <br></br>
+       <div>UserName : victor@gmail.com Password : 123456</div>
+       <div>UserName : paul@gmail.com Password : 123456</div>
 
       </div>
-
 
     )
   }

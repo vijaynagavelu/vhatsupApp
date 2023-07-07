@@ -319,7 +319,8 @@ export default function MessageSection() {
 
             <div className="chatMessages">
                 {messagesJson.map(function (message, i) {
-                    var tailCheck = (messagesJson[i + 1] && messagesJson[i + 1].sender === user.email);
+                    // var tailCheck = ((messagesJson[i + 1] && messagesJson[i + 1].sender === user.email )|| messagesJson[i + 1] === undefined );
+                    var tailCheck = ((messagesJson[i + 1] && messagesJson[i + 1].sender !== messagesJson[i].sender )|| messagesJson[i + 1] === undefined );
                     if (message.sender === user.email) {
                         return (
                             <div key={i}>

@@ -16,6 +16,7 @@ import {
 
 const CollectionRef = collection(db, "contactsArray");
 
+
 export default function ChatsSection() {
 
     const [user, setUser] = useState();
@@ -24,24 +25,19 @@ export default function ChatsSection() {
     const [message, setMessage] = useState();
     const [userDp, setUserDp] = useState();
 
-
     const getChatsArray = useCallback(async () => {
         if (!user) {
             return;
         }
-        console.log(user.email + "Array");
-
+        // console.log(user.email + "Array");
         const contactsListMatch = query(CollectionRef, (
             where("contactsListName", '==', user.email)
         ));
 
-        //  const data = await getDocs(CollectionRef, user.email + "Array");
         const data = await getDocs(contactsListMatch);
         if (data.docs[0]) {
-            // console.log(data.docs[0].id);
             setDocumentId(data.docs[0].id);
-            // console.log(data.docs[0].data().a);
-            console.log(data.docs[0].data().userImgLink);
+            // console.log(data.docs[0].data().userImgLink);
             setChats(data.docs[0].data().a);
             setUserDp(data.docs[0].data().userImgLink);
         } else {
@@ -49,7 +45,6 @@ export default function ChatsSection() {
             console.log("no such docss")
         }
     }, [user])
-
 
 
     const addContact = async () => {
@@ -99,7 +94,6 @@ export default function ChatsSection() {
     }, [getChatsArray]);
 
     useEffect(() => {
-        // console.log("chatSection");
         getChatsArray();
     }, [getChatsArray, user]);
 
@@ -108,9 +102,6 @@ export default function ChatsSection() {
         await signOut(auth);
     }
 
-    // if (!chats) {
-    //     return;
-    // }
 
     if (chats === null) {
         return (
@@ -135,7 +126,7 @@ export default function ChatsSection() {
                             <svg viewBox="0 0 24 24" height="24" width="24" preserveAspectRatio="xMidYMid meet" className="" fill="none"><path fill="currentColor" d="M15.009,13.805h-0.636l-0.22-0.219c0.781-0.911,1.256-2.092,1.256-3.386 c0-2.876-2.332-5.207-5.207-5.207c-2.876,0-5.208,2.331-5.208,5.207s2.331,5.208,5.208,5.208c1.293,0,2.474-0.474,3.385-1.255 l0.221,0.22v0.635l4.004,3.999l1.194-1.195L15.009,13.805z M10.201,13.805c-1.991,0-3.605-1.614-3.605-3.605 s1.614-3.605,3.605-3.605s3.605,1.614,3.605,3.605S12.192,13.805,10.201,13.805z"></path></svg>
                             <input className='searchBox' placeholder='Search or start new chat' onChange={(e) => { setMessage(e.target.value) }} value={message}></input >
                         </div>
-                        <button onClick={addContact} >Add</button>
+                        {/* <button onClick={addContact} >Add</button> */}
                         <div className='unreadChatsFliter'>
                             <svg viewBox="0 0 24 24" height="20" width="20" preserveAspectRatio="xMidYMid meet" className="" fill="none"><path fill="currentColor" d="M10,18.1h4v-2h-4V18.1z M3,6.1v2h18v-2H3z M6,13.1h12v-2H6V13.1z"></path></svg>
                         </div>
@@ -178,7 +169,7 @@ export default function ChatsSection() {
         );
     }
 
-    if (chats) {
+    if (chats ) {
         return (
             <div className='containerA'>
 
@@ -201,7 +192,7 @@ export default function ChatsSection() {
                             <svg viewBox="0 0 24 24" height="24" width="24" preserveAspectRatio="xMidYMid meet" className="" fill="none"><path fill="currentColor" d="M15.009,13.805h-0.636l-0.22-0.219c0.781-0.911,1.256-2.092,1.256-3.386 c0-2.876-2.332-5.207-5.207-5.207c-2.876,0-5.208,2.331-5.208,5.207s2.331,5.208,5.208,5.208c1.293,0,2.474-0.474,3.385-1.255 l0.221,0.22v0.635l4.004,3.999l1.194-1.195L15.009,13.805z M10.201,13.805c-1.991,0-3.605-1.614-3.605-3.605 s1.614-3.605,3.605-3.605s3.605,1.614,3.605,3.605S12.192,13.805,10.201,13.805z"></path></svg>
                             <input className='searchBox' placeholder='Search or start new chat' onChange={(e) => { setMessage(e.target.value) }} value={message}></input >
                         </div>
-                        <button onClick={addContact} >Add</button>
+                        <button style={{display :"none"}} onClick={addContact} >Add</button>
                         <div className='unreadChatsFliter'>
                             <svg viewBox="0 0 24 24" height="20" width="20" preserveAspectRatio="xMidYMid meet" className="" fill="none"><path fill="currentColor" d="M10,18.1h4v-2h-4V18.1z M3,6.1v2h18v-2H3z M6,13.1h12v-2H6V13.1z"></path></svg>
                         </div>
@@ -221,8 +212,7 @@ export default function ChatsSection() {
                 {
                     chats.map(function (contact, i) {
                         return (
-                            // <Contact key={i} name={contact.name} lastSeen={contact.lastSeen} lastMessageTime={contact.messageTime} message={contact.message} pinned={contact.pinned} imgLink={contact.imgLink} messages={contact.messages} email={contact.email} />
-                            <Contact key={i} name={contact.name} lastSeen={contact.lastSeen} lastMessageTime={1679705500} message={"No"} pinned={"No"} imgLink={contact.imgLink} messages={"No"} email={contact.email} />
+                            <Contact key={i} name={contact.name} lastSeen={contact.lastSeen} imgLink={contact.imgLink} email={contact.email} />
                         )
                     })
                 }
@@ -241,7 +231,7 @@ export default function ChatsSection() {
                     <br />
 
                     <div>
-                        <input type="submit" value="LogOut" onClick={logout} />
+                        <input style={{ color: "#53bdeb",backgroundColor:"transparent" }} type="submit" value="LogOut" onClick={logout} />
                         <br />
                         <br />
                         {user && <div>{user.email}</div>}
